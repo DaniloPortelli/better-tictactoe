@@ -4,8 +4,9 @@ export function CheckData() {
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<number>(0);
   const [married, setMarried] = useState<string>("No");
-
   const [birthdate, setBirthdate] = useState<string>("");
+
+  const [show, setShow] = useState(false)
 
   function isAgeValid(age: number, birthdate: string): boolean {
     const dob = new Date(birthdate);
@@ -23,6 +24,11 @@ export function CheckData() {
     return computedAge === age;
   }
 
+//   name: lunghezza minima 5, massima 50
+// age: compresa tra 1 e 150
+// married: obbligatorio solo se l’età è superiore a 18
+// date of birth: data valida e coerente con l’età fornita
+
   const validationAge = isAgeValid(age, birthdate)
 
   function validationForm() {
@@ -37,8 +43,13 @@ export function CheckData() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validationForm()) {
+      setShow(true)
+
+    } else return
   };
 
+  
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -96,6 +107,18 @@ export function CheckData() {
       }
 
       <button type="submit">Invia</button>
+
+      {
+        show && (
+          <div>
+            <h3>Riepilogo dei dati inviati:</h3>
+            <blockquote>Nome: {name}</blockquote>
+            <blockquote>Eta': {age}</blockquote>
+            <blockquote>Sposato: {married === "yes" ? "Si" : "No"}</blockquote>
+            <blockquote>Data di nascita: {birthdate}</blockquote>
+          </div>
+        )
+      }
     </form>
   );
 }
