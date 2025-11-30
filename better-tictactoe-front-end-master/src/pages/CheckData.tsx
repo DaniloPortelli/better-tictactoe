@@ -1,33 +1,29 @@
 import React, { useState } from "react";
 
+function isAgeValid(age: number, birthdate: string): boolean {
+  const dob = new Date(birthdate);
+  const today = new Date();
+
+  let computedAge = today.getFullYear() - dob.getFullYear();
+
+  if (
+    today.getMonth() < dob.getMonth() ||
+    (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+  ) {
+    computedAge--;
+  }
+
+  return computedAge === age;
+}
+
 export function CheckData() {
+
   const [name, setName] = useState<string>("");
   const [age, setAge] = useState<number>(0);
-  const [married, setMarried] = useState<string>("No");
+  const [married, setMarried] = useState<string>("");
   const [birthdate, setBirthdate] = useState<string>("");
 
   const [show, setShow] = useState(false)
-
-  function isAgeValid(age: number, birthdate: string): boolean {
-    const dob = new Date(birthdate);
-    const today = new Date();
-
-    let computedAge = today.getFullYear() - dob.getFullYear();
-
-    if (
-      today.getMonth() < dob.getMonth() ||
-      (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
-    ) {
-      computedAge--;
-    }
-
-    return computedAge === age;
-  }
-
-//   name: lunghezza minima 5, massima 50
-// age: compresa tra 1 e 150
-// married: obbligatorio solo se l’età è superiore a 18
-// date of birth: data valida e coerente con l’età fornita
 
   const validationAge = isAgeValid(age, birthdate)
 
@@ -45,11 +41,10 @@ export function CheckData() {
     e.preventDefault();
     if (!validationForm()) {
       setShow(true)
-
     } else return
   };
 
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
